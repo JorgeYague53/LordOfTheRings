@@ -121,3 +121,5 @@ document.addEventListener("click", (event) => {
         suggestionList.style.display = "none";
     }
 });
+
+

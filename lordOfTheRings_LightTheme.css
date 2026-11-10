@@ -1,91 +1,5 @@
-        .light-mode {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #556D00;
-            color: #FFE6BD;
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            background-color: #B6BD89;
-            color: #556D00;
-            padding: 10px;
-        }
-
-        .logo img {
-            width: 100px;
-            height: auto;
-            margin-right: 10px;
-        }
-
-        h1 {
-            margin: 0;
-        }
-
-        .map-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .texto {
-            padding: 20px;
-            max-width: 80%;
-            margin: 0 auto;
-            font-size: 14px;
-        }
-
-        .theme {
-            display: flex;
-            align-items: right;
-            margin-left: auto;
-            height: 30px;
-        }
-
-        .switch {
-            width: 40px;
-            height: 20px;
-            background-color: #FFE6BD;
-            border: 2px solid #A26B0E;
-            border-radius: 100px;
-            cursor: pointer;
-            display: flex;
-            align-items: left;
-            justify-content: left;
-        }
-
-        .switch-icon {
-            width: 20px;
-            height: 20px;
-            align-items: left;
-            justify-content: left;
-        }
-
-        .switch-icon:hover {
-            transform: scale(1.1);
-        }
-
-        .characters {
-            margin-left: 20px;
-            background-color: #FFE6BD;
-            color: #556D00;
-            height: 40px;
-            width: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 100px;
-            text-decoration: none;
-        }
-
-        .characters:hover {
-            background-color: #A26B0E;
-            color: #FFE6BD;
-        }
-
-        .light-mode {
+    /*LIGHT THEME*/
+        .style {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -271,3 +185,6 @@
             background-color: #B6BD89;
             color: #556D00;
         }
+
+
+    /*SEPARADOR*/
