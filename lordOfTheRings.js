@@ -11,32 +11,37 @@ let searchInput = document.getElementById("searchInput");
 let suggestionList = document.getElementById("suggestions");
 let movieFilter = document.getElementById("movieFilter");
 
-fetch("https://the-one-api.dev/v2/character?", headers)
-    .then((response) => {
-        return response.json();
-    })
-    .then((data) => {
-        console.log(data.docs);
-        characters = data.docs;
+async function cachedFetch(key, url) {
+    try {
+        const cached = localStorage.getItem(key);
+        if (cached) return JSON.parse(cached);
+    } catch (e) {}
+
+    const response = await fetch(url, headers);
+    if (!response.ok) throw new Error(`HTTP ${response.status} for ${url}`);
+   const data = await response.json();
+    if (!data.docs) throw new Error("No docs in response");
+
+    try {
+       localStorage.setItem(key, JSON.stringify(data.docs));
+    } catch (e) {}
+    return data.docs;
+}
+
+cachedFetch("characters", "https://the-one-api.dev/v2/character?limit=1000")
+    .then((docs) => {
+        characters = docs;
         showCharacters(characters);
-    });
+   })
+   .catch((err) => console.error(err));
 
-fetch("https://the-one-api.dev/v2/movie", headers)
-    .then((response) => {
-        return response.json();
-    })
-    .then((data) => {
-        console.log(data.docs);
-        fillMovies(data.docs);
-    });
+cachedFetch("movies", "https://the-one-api.dev/v2/movie")
+   .then(fillMovies)
+    .catch((err) => console.error(err));
 
-fetch("https://the-one-api.dev/v2/quote?limit=3000", headers)
-    .then((response) => {
-        return response.json();
-    })
-    .then((data) => {
-        quotes = data.docs;
-    });
+cachedFetch("quotes", "https://the-one-api.dev/v2/quote?limit=3000")
+    .then((docs) => { quotes = docs; })
+   .catch((err) => console.error(err));
 
 function fillMovies(list) {
     list.forEach(movie => {
@@ -44,11 +49,11 @@ function fillMovies(list) {
     });
 }
 
-function showCharacters(list) {
+function showCharacters(list, onlyTop = true) {
     const container = document.getElementById("cards");
     container.innerHTML = "";
     list.forEach(c => {
-        if (topCharacters.includes(c.name)) {
+         if (!onlyTop || topCharacters.includes(c.name)) {
             container.innerHTML += `
       <div class="card">
         ${characterImages[c.name]
@@ -111,7 +116,7 @@ function showSuggestions() {
 function chooseCharacter(character) {
     searchInput.value = character.name;
     suggestionList.style.display = "none";
-    showCharacters([character]);
+    showCharacters([character], false);
 }
 
 searchInput.addEventListener("input", showSuggestions);
@@ -187,54 +192,54 @@ const topCharacters = [
 ];
 
 const characterImages = {
-    "Aragorn II Elessar": "Photos/Aragorn.jpg",
+    "Aragorn II Elessar": "Photos/Aragorn.avif",
     "Arwen": "Photos/Arwen.jpg",
-    "Azog": "Photos/Azog.jpg",
+    "Azog": "Photos/Azog.webp",
     "Balin": "Photos/Balin.jpg",
-    "Balrog": "Photos/Balrog.jpg",
-    "Bard": "Photos/Bard.jpg",
-    "Beorn": "Photos/Beorn.jpg",
-    "Bilbo Baggins": "Photos/Bilbo_Baggins.jpg",
+    "Balrog": "Photos/Balrog.webp",
+    "Bard": "Photos/Bard.webp",
+    "Beorn": "Photos/Beorn.webp",
+    "Bilbo Baggins": "Photos/Bilbo-Baggins.jpg",
     "Bofur": "Photos/Bofur.jpg",
-    "Bolg": "Photos/Bolg.jpg",
-    "Bombur": "Photos/Bombur.jpg",
-    "Boromir": "Photos/Boromir.jpg",
-    "Celeborn": "Photos/Celeborn.jpg",
-    "Denethor II": "Photos/Denethor_II.jpg",
+    "Bolg": "Photos/Bolg.webp",
+    "Bombur": "Photos/Bombur.webp",
+    "Boromir": "Photos/Boromir.webp",
+    "Celeborn": "Photos/Celeborn.webp",
+    "Denethor II": "Photos/Denethor-II.JPG",
     "Dwalin": "Photos/Dwalin.jpg",
-    "Elendil": "Photos/Elendil.jpg",
+    "Elendil": "Photos/Elendil.avif",
     "Elrond": "Photos/Elrond.jpg",
     "Éomer": "Photos/Éomer.jpg",
     "Éowyn": "Photos/Éowyn.jpg",
     "Faramir": "Photos/Faramir.jpg",
     "Fíli": "Photos/Fíli.jpg",
-    "Frodo Baggins": "Photos/Frodo_Baggins.jpg",
-    "Galadriel": "Photos/Galadriel.jpg",
+    "Frodo Baggins": "Photos/Frodo-Baggins.jpg",
+    "Galadriel": "Photos/Galadriel.webp",
     "Gamling": "Photos/Gamling.jpg",
-    "Gandalf": "Photos/Gandalf.jpg",
-    "Gimli": "Photos/Gimli.jpg",
+    "Gandalf": "Photos/Gandalf.webp",
+    "Gimli": "Photos/Gimli.webp",
     "Gollum": "Photos/Gollum.jpg",
-    "Gothmog": "Photos/Gothmog.jpg",
-    "Great Goblin": "Photos/Great_Goblin.jpg",
-    "Gríma Wormtongue": "Photos/Gríma_Wormtongue.jpg",
+    "Gothmog": "Photos/Gothmog.webp",
+    "Great Goblin": "Photos/Great-Goblin.webp",
+    "Gríma Wormtongue": "Photos/Gríma-Wormtongue.jpg",
     "Haldir": "Photos/Haldir.jpg",
-    "Isildur": "Photos/Isildur.jpg",
+    "Isildur": "Photos/Isildur.avif",
     "Kíli": "Photos/Kíli.jpg",
-    "Legolas": "Photos/Legolas.jpg",
+    "Legolas": "Photos/Legolas.webp",
     "Lurtz": "Photos/Lurtz.jpg",
-    "Meriadoc Brandybuck": "Photos/Meriadoc_Brandybuck.jpg",
-    "Peregrin Took": "Photos/Peregrin_Took.jpg",
-    "Radagast": "Photos/Radagast.jpg",
-    "Samwise Gamgee": "Photos/Samwise_Gamgee.jpg",
-    "Saruman": "Photos/Saruman.jpg",
-    "Sauron": "Photos/Sauron.jpg",
+    "Meriadoc Brandybuck": "Photos/Meriadoc-Brandybuck.webp",
+    "Peregrin Took": "Photos/Peregrin-Took.jpg",
+    "Radagast": "Photos/Radagast.webp",
+    "Samwise Gamgee": "Photos/Samwise-Gamgee.jpg",
+    "Saruman": "Photos/Saruman.webp",
+    "Sauron": "Photos/Sauron.webp",
     "Shelob": "Photos/Shelob.jpg",
-    "Smaug": "Photos/Smaug.jpg",
+    "Smaug": "Photos/Smaug.webp",
     "Tauriel": "Photos/Tauriel.jpg",
-    "Théoden": "Photos/Théoden.jpg",
-    "Théodred": "Photos/Théodred.jpg",
-    "Thorin II Oakenshield": "Photos/Thorin_II_Oakenshield.jpg",
-    "Thranduil": "Photos/Thranduil.jpg",
-    "Treebeard": "Photos/Treebeard.jpg",
-    "Witch-king of Angmar": "Photos/Witch-king_of_Angmar.jpg"
+    "Théoden": "Photos/Théoden.webp",
+    "Théodred": "Photos/Théodred.webp",
+    "Thorin II Oakenshield": "Photos/Thorin-II-Oakenshield.webp",
+    "Thranduil": "Photos/Thranduil.webp",
+    "Treebeard": "Photos/Treebeard.webp",
+    "Witch-king of Angmar": "Photos/Witch-king-of-Angmar.webp"
 };
