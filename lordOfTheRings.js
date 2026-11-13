@@ -11,6 +11,28 @@ let searchInput = document.getElementById("searchInput");
 let suggestionList = document.getElementById("suggestions");
 let movieFilter = document.getElementById("movieFilter");
 
+loadMode()
+function switchMode(){
+    let currentMode = localStorage.getItem("mode")
+    if(currentMode == "light"){
+        document.getElementById("theme").href = "lordOfTheRings_DarkTheme.css"
+        localStorage.setItem("mode", "dark")
+    }
+    if(currentMode == "dark" || !currentMode){
+        document.getElementById("theme").href = "lordOfTheRings_LightTheme.css"
+        localStorage.setItem("mode", "light")
+    }
+}
+function loadMode(){
+    let currentMode = localStorage.getItem("mode")
+    if (currentMode == "dark"){
+        document.getElementById("theme").href = "lordOfTheRings_DarkTheme.css"
+    }
+    if(currentMode == "light"){
+        document.getElementById("theme").href = "lordOfTheRings_LightTheme.css"
+    }
+}
+
 async function cachedFetch(key, url) {
     try {
         const cached = localStorage.getItem(key);
@@ -243,3 +265,4 @@ const characterImages = {
     "Treebeard": "Photos/Treebeard.webp",
     "Witch-king of Angmar": "Photos/Witch-king-of-Angmar.webp"
 };
+

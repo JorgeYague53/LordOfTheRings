@@ -53,8 +53,8 @@
             border-radius: 100px;
             cursor: pointer;
             display: flex;
-            align-items: left;
-            justify-content: left;
+            align-items: right;
+            justify-content: right;
         }
 
         .switch-icon {
