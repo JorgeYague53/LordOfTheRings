@@ -1,4 +1,15 @@
 /*DARK THEME*/
+    @font-face {
+    font-family: "Ringbearer";
+    src: url("Fonts/Ringbearer.ttf") format("truetype");   /* or "Fonts/RINGM___.TTF" if you kept the name */
+    font-display: swap;
+}
+p {
+    font-family: "Ringbearer", Georgia, serif !important;
+}
+h1, h2, h3 {
+    font-family: "Ringbearer", Georgia, serif !important;
+}
 .intro {
     max-width: 800px;
     margin: 40px auto;
@@ -80,7 +91,7 @@ h1 {
     background-color: #012D35;
     color: #E0F3EA;
     height: 40px;
-    width: 120px;
+    width: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -99,6 +110,7 @@ h1 {
 }
 
 .search-box {
+    font-family: "Ringbearer", Georgia, serif !important;
     height: 40px;
     width: 220px;
     padding: 0 16px;
@@ -115,6 +127,7 @@ h1 {
 }
 
 .suggestions {
+    font-family: "Ringbearer", Georgia, serif !important;
     position: absolute;
     top: 100%;
     left: 0;
@@ -132,6 +145,7 @@ h1 {
 }
 
 .suggestions li {
+    font-family: "Ringbearer", Georgia, serif !important;
     padding: 8px 16px;
     cursor: pointer;
 }
@@ -142,6 +156,7 @@ h1 {
 }
 
 .movie-select {
+    font-family: "Ringbearer", Georgia, serif !important;
     margin-left: 20px;
     height: 40px;
     padding: 0 16px;
@@ -266,7 +281,18 @@ h1 {
 }
 
 .card.detail h2 {
+    font-family: "Ringbearer", Georgia, serif !important;
     font-size: 2.5rem;
+    margin: 0 0 12px;
+}
+.card.detail blockquote {
+    font-family: "Ringbearer", Georgia, serif !important;
+    font-size: 1.2rem;
+    margin: 0 0 12px;
+}
+.card.detail li {
+    font-family: "Times New Roman", Times, serif !important;
+    font-size: 1.5rem;
     margin: 0 0 12px;
 }
 
@@ -280,6 +306,7 @@ h1 {
     padding: 0;
 }
 .back-button {
+    font-family: "Ringbearer", Georgia, serif !important;
     display: inline-block;
     margin-top: 16px;
     padding: 8px 16px;
