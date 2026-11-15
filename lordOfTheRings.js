@@ -73,19 +73,25 @@ function fillMovies(list) {
 
 function showCharacters(list, onlyTop = true) {
     const container = document.getElementById("cards");
+    container.classList.remove("single");
     container.innerHTML = "";
+
+    const shown = new Set();   // names already drawn
+
     list.forEach(c => {
-        if (!onlyTop || topCharacters.includes(c.name)) {
-            container.innerHTML += `
+        if (onlyTop && !topCharacters.includes(c.name)) return;
+        if (shown.has(c.name)) return;   // skip duplicates like the second Gothmog
+        shown.add(c.name);
+
+        container.innerHTML += `
       <div class="card">
-       <div class="card-image">
-         ${characterImages[c.name]
+        <div class="card-image" data-id="${c._id}">
+          ${characterImages[c.name]
                     ? `<img src="${characterImages[c.name]}" alt="${c.name}" referrerpolicy="no-referrer">`
                     : `<div class="noimg">No picture</div>`}
         </div>
         <h3>${c.name}</h3>
       </div>`;
-        }
     });
 }
 
@@ -140,8 +146,50 @@ function showSuggestions() {
 function chooseCharacter(character) {
     searchInput.value = character.name;
     suggestionList.style.display = "none";
-    showCharacters([character], false);
+    showCharacterDetail(character);
 }
+function getAnyRandomQuote(characterId) {
+    const list = quotes.filter(q => q.character === characterId);
+    if (list.length === 0) return null;
+    return list[Math.floor(Math.random() * list.length)];
+}
+
+function showCharacterDetail(c) {
+    const container = document.getElementById("cards");
+    container.classList.add("single");
+
+    const path = characterImages[c.name];
+    const quote = getAnyRandomQuote(c._id);
+
+    // optional facts from the API, skipping empty ones
+    const facts = [["Race", c.race], ["Realm", c.realm], ["Birth", c.birth], ["Death", c.death]]
+        .filter(([, value]) => value && value !== "NaN")
+        .map(([label, value]) => `<li><strong>${label}:</strong> ${value}</li>`)
+        .join("");
+
+    container.innerHTML = `
+      <div class="card detail">
+        <a class="back-button" href="lotr_page_2.html">← Back to all characters</a>
+        <div class="detail-image">
+          ${path
+            ? `<img src="${path}" alt="${c.name}" referrerpolicy="no-referrer">`
+            : `<div class="noimg">No picture</div>`}
+        </div>
+        <h2>${c.name}</h2>
+        ${quote ? `<blockquote>“${quote.dialog}”</blockquote>` : ""}
+        ${facts ? `<ul class="facts">${facts}</ul>` : ""}
+      </div>`;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// one listener for all the images (the cards are created with innerHTML)
+document.getElementById("cards").addEventListener("click", (event) => {
+    const box = event.target.closest(".card-image");
+    if (!box) return;
+
+    const character = characters.find(c => c._id === box.dataset.id);
+    if (character) showCharacterDetail(character);
+});
 
 searchInput.addEventListener("input", showSuggestions);
 movieFilter.addEventListener("change", showSuggestions);
