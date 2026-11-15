@@ -12,23 +12,23 @@ let suggestionList = document.getElementById("suggestions");
 let movieFilter = document.getElementById("movieFilter");
 
 loadMode()
-function switchMode(){
+function switchMode() {
     let currentMode = localStorage.getItem("mode")
-    if(currentMode == "light"){
+    if (currentMode == "light") {
         document.getElementById("theme").href = "lordOfTheRings_DarkTheme.css"
         localStorage.setItem("mode", "dark")
     }
-    if(currentMode == "dark" || !currentMode){
+    if (currentMode == "dark" || !currentMode) {
         document.getElementById("theme").href = "lordOfTheRings_LightTheme.css"
         localStorage.setItem("mode", "light")
     }
 }
-function loadMode(){
+function loadMode() {
     let currentMode = localStorage.getItem("mode")
-    if (currentMode == "dark"){
+    if (currentMode == "dark") {
         document.getElementById("theme").href = "lordOfTheRings_DarkTheme.css"
     }
-    if(currentMode == "light"){
+    if (currentMode == "light") {
         document.getElementById("theme").href = "lordOfTheRings_LightTheme.css"
     }
 }
@@ -37,16 +37,16 @@ async function cachedFetch(key, url) {
     try {
         const cached = localStorage.getItem(key);
         if (cached) return JSON.parse(cached);
-    } catch (e) {}
+    } catch (e) { }
 
     const response = await fetch(url, headers);
     if (!response.ok) throw new Error(`HTTP ${response.status} for ${url}`);
-   const data = await response.json();
+    const data = await response.json();
     if (!data.docs) throw new Error("No docs in response");
 
     try {
-       localStorage.setItem(key, JSON.stringify(data.docs));
-    } catch (e) {}
+        localStorage.setItem(key, JSON.stringify(data.docs));
+    } catch (e) { }
     return data.docs;
 }
 
@@ -54,16 +54,16 @@ cachedFetch("characters", "https://the-one-api.dev/v2/character?limit=1000")
     .then((docs) => {
         characters = docs;
         showCharacters(characters);
-   })
-   .catch((err) => console.error(err));
+    })
+    .catch((err) => console.error(err));
 
 cachedFetch("movies", "https://the-one-api.dev/v2/movie")
-   .then(fillMovies)
+    .then(fillMovies)
     .catch((err) => console.error(err));
 
 cachedFetch("quotes", "https://the-one-api.dev/v2/quote?limit=3000")
     .then((docs) => { quotes = docs; })
-   .catch((err) => console.error(err));
+    .catch((err) => console.error(err));
 
 function fillMovies(list) {
     list.forEach(movie => {
@@ -75,12 +75,14 @@ function showCharacters(list, onlyTop = true) {
     const container = document.getElementById("cards");
     container.innerHTML = "";
     list.forEach(c => {
-         if (!onlyTop || topCharacters.includes(c.name)) {
+        if (!onlyTop || topCharacters.includes(c.name)) {
             container.innerHTML += `
       <div class="card">
-        ${characterImages[c.name]
+       <div class="card-image">
+         ${characterImages[c.name]
                     ? `<img src="${characterImages[c.name]}" alt="${c.name}" referrerpolicy="no-referrer">`
                     : `<div class="noimg">No picture</div>`}
+        </div>
         <h3>${c.name}</h3>
       </div>`;
         }

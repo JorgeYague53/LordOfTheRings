@@ -170,14 +170,48 @@
             max-width: 80%;
             margin: 0 auto;
         }
+        #cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 80%;
+            margin: 0 auto;
+            text-align: center;
+        }
 
         .card {
             text-align: center;
+            place-items: center;
+        }
+        .card :hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+        .card-image {
+            width: 200px;
+            height: 200px;
+            place-items: center;
         }
 
         .card img {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover;
+              border-radius:10px;
+              place-items: center;
+        }
+        .card text {
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+            place-items: center;
+
+        }
+        .card img:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         .noimg {
